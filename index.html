@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    :root{
+      font-family: monospace;
+      font-size: 16px;
+    }
+
+    body{
+      background: lightgray;
+    }
+    div{
+      padding: 0.5rem;
+    }
+    ul{
+      list-style: none;
+    }
+    button{
+      padding: 0.5rem;
+    }
+    .grid{
+      display: grid;
+      width: fit-content;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  </style>
+</head>
+
+<body>
+  <!--mostrar y ocultar-->
+  <div x-data="{ open: false }">
+    <button @click="open = !open">Toggle</button>
+    <span x-show="open" x-transition.duration.500ms>Hello 👋</span>
+  </div>
+
+  <hr>
+
+  <!--true false-->
+  <div x-data="{ show: true }">
+    <button @click="show = !show">Toggle</button>
+    <span x-show="show">Truthy</span>
+    <span x-show="!show">Falsy</span>
+  </div>
+
+  <hr>
+
+<!--ejecutar js-->
+  <div x-data="{ date: new Date().toLocaleString('es-ES') }">
+    <span x-text="date"></span>
+  </div>
+
+  <hr>
+
+  <!--for loop -->
+  <div x-data="{ items: ['😈', '👿', '💀', '💩', '🤡', '👹', '👺', '👻', '👽', '👾', '🤖', '💿'] }">
+    <ul class="grid">
+      <template x-for="item in items" :key="item">
+        <li x-text="item"></li>
+      </template>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!--model-->
+  <div x-data="{ name: 'Espejo' }">
+    <input x-model="name" type="text">
+    <span x-text="name.split('').reverse().join('')"></span>
+  </div>
+
+<div x-cloak x-data="{ isLoggedIn: false }">
+    <template x-if="isLoggedIn">
+        <p>Bienvenido usuario</p>
+    </template>
+    <template x-else>
+        <p>Por favor, inicia sesión</p>
+    </template>
+</div>
+
+<hr>
+<!-- ajax -->
+
+<div x-data="{ users: [] }">
+    <button @click="fetch('https://jsonplaceholder.typicode.com/users').then(response => response.json()).then(data => users = data)">Fetch users</button>
+    <ul>
+        <template x-for="user in users" :key="user.id">
+            <li x-text="user.name"></li>
+        </template>
+    </ul>
+  <script src="https://unpkg.com/alpinejs" defer></script>
+  <script>
+    const $ = document.querySelector.bind(document)
+    const div = $('div')
+    console.log(div)
+  </script>
+</body>
+</html>
